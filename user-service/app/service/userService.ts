@@ -10,6 +10,7 @@ import { LoginInput } from "../models/dto/LoginInput";
 import { GenerateAccessCode, SendVerificationCode } from "../utility/notification";
 import { VerificationInput } from "../models/dto/UpdateInput";
 import { TimeDifference } from "../utility/dateHelper";
+import { ProfileInput } from "../models/dto/AddressInput";
 
 @autoInjectable()
 export class UserService {
@@ -116,15 +117,52 @@ export class UserService {
     // User Profile
 
     async CreateProfile(event: APIGatewayProxyEventV2) {
-        return SuccessResponse({ message: "response from create profile"});
+        try {
+            const token = event.headers.authorization;
+            const payload = await VerifyToken(token);
+            if(!payload) return ErrorResponse(403, "Authorization failed!");
+
+            const input = plainToClass(ProfileInput, event.body);
+            const error = await AppValidationError(input);
+            if(error) return ErrorResponse(404, error);
+
+            const result = await this.repository.createProfile(payload.user_id, input);
+            return SuccessResponse({ message: "Profile created!"});
+        } catch (error) {
+            console.log(error);
+            return ErrorResponse(500, error);
+        }        
     }
 
     async GetProfile(event: APIGatewayProxyEventV2) {
-        return SuccessResponse({ message: "response from get profile"});
+        try {
+            const token = event.headers.authorization;
+            const payload = await VerifyToken(token);
+            if(!payload) return ErrorResponse(403, "Authorization failed!");
+            const result = await this.repository.getUserProfile(payload.user_id);
+            return SuccessResponse(result);
+        } catch (error) {
+            console.log(error);
+            return ErrorResponse(500, error);
+        }        
     }
 
     async EditProfile(event: APIGatewayProxyEventV2) {
-        return SuccessResponse({ message: "response from edit profile"});
+        try {
+            const token = event.headers.authorization;
+            const payload = await VerifyToken(token);
+            if(!payload) return ErrorResponse(403, "Authorization failed!");
+
+            const input = plainToClass(ProfileInput, event.body);
+            const error = await AppValidationError(input);
+            if(error) return ErrorResponse(404, error);
+
+            const result = await this.repository.editProfile(payload.user_id, input);
+            return SuccessResponse({ message: "Profile updated!"});
+        } catch (error) {
+            console.log(error);
+            return ErrorResponse(500, error);
+        }        
     }
 
     // Cart Section

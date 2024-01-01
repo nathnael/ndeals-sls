@@ -1,5 +1,7 @@
+import { AddressModal } from "./AddressModal";
+
 export interface UserModel {
-    user_id?: string;
+    user_id?: number;
     email: string;
     password: string;
     salt: string;
@@ -9,5 +11,6 @@ export interface UserModel {
     last_name?: string;
     profile_pic?: string;
     verification_code?: number;
-    expiry?: string     
+    expiry?: string;
+    address?: AddressModal[];
 }
