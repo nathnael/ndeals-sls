@@ -1,9 +1,9 @@
 import twilio from "twilio";
 
-const accountSid = "AC95e28cf4f7999d755a9ffbe5082fcede";
-const authToken = "2527c8a0fe14a2debdfeb260c5ff40df";
+const accountSid = "";
+const authToken = "";
 
-const client = twilio(accountSid, authToken);
+// const client = twilio(accountSid, authToken);
 
 export const GenerateAccessCode = () => {
     const code = Math.floor(10000 + Math.random() * 900000);
@@ -16,12 +16,12 @@ export const SendVerificationCode = async (
     code: number,
     toPhoneNumber: string
 ) => {
-    const response = await client.messages.create({
-        body: `Your verification code is ${code}, it will expire within 30 minutes.`,
-        from: "+251911474539",
-        to: toPhoneNumber.trim()
-    });
+    // const response = await client.messages.create({
+    //     body: `Your verification code is ${code}, it will expire within 30 minutes.`,
+    //     from: "+251911474539",
+    //     to: toPhoneNumber.trim()
+    // });
 
-    console.log(response);
-    return response;
+    // console.log(response);
+    // return response;
 };
