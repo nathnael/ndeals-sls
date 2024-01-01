@@ -4,6 +4,12 @@ start_db:
 stop_db:
 	docker compose down
 
+migrate:
+	db-migrate up
+
+migrate-down:
+	db-migrate down
+
 server:
 	yarn run dev
 
